@@ -5,7 +5,7 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-int wmain(int, char *[], char*[])
+int main(int, char *[], char*[])
 {
 	WSADATA d;
 	WSAStartup(MAKEWORD(2, 2), &d);
@@ -21,12 +21,11 @@ int wmain(int, char *[], char*[])
 	int s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     bind(s, result->ai_addr,result->ai_addrlen);
 	listen(s, 5);
-	SOCKET c;
+	SOCKET c = accept(s, NULL, NULL);;
 	char buffer[1024];
 	int  len;
-	while (1 == 1)
+	while (c != NULL)
 	{
-		c = accept(s, NULL, NULL);
 		len = recv(c, buffer, 1, 0);
 		printf("Output: %.*s\n", len, buffer);
 		int type = atoi((char*)buffer);
@@ -41,6 +40,7 @@ int wmain(int, char *[], char*[])
 		{
 			return 0;
 		}
+		c = accept(s, NULL, NULL);
 	}
 	return 0;
 }
